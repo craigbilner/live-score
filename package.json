@@ -1,0 +1,25 @@
+{
+  "name": "live-score",
+  "version": "1.0.0",
+  "description": "a football live update thing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "chokidar '**/*.elm' -c 'elm make src/elm/Main.elm --output src/js/elm.compiled.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craigbilner/live-score.git"
+  },
+  "keywords": [
+    "football",
+    "live",
+    "score"
+  ],
+  "author": "Craig Bilner",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/craigbilner/live-score/issues"
+  },
+  "homepage": "https://github.com/craigbilner/live-score#readme"
+}
