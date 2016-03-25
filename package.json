@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/craigbilner/live-score/issues"
   },
-  "homepage": "https://github.com/craigbilner/live-score#readme"
+  "homepage": "https://github.com/craigbilner/live-score#readme",
+  "devDependencies": {
+    "chokidar-cli": "^1.2.0"
+  }
 }
