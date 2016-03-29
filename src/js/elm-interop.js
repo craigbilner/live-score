@@ -137,7 +137,7 @@ const data = {
       "gAgainst": 24
     },
     {
-      "team": "WatgFord",
+      "team": "Watford",
       "won": 10,
       "drawn": 7,
       "lost": 13,
