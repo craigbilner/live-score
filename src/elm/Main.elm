@@ -126,7 +126,7 @@ applyPositions pos team =
 tableHead : Html.Html
 tableHead =
   li
-    [ style (listItemStyle ++ headListItemStyle) ]
+    [ style ((listItemStyle 0) ++ headListItemStyle) ]
     [ div
         [ style cellStyle ]
         [ text "pos" ]
@@ -163,7 +163,7 @@ tableHead =
 mapTable : List ( String, String ) -> TableTeam -> Html.Html
 mapTable customStyle { team, won, drawn, lost, gFor, gAgainst, played, gd, points, position } =
   li
-    [ style (listItemStyle ++ customStyle) ]
+    [ style ((listItemStyle position) ++ customStyle) ]
     [ div
         [ style cellStyle ]
         [ text <| toString position ]
@@ -205,18 +205,22 @@ listStyle =
   , ( "width", "700px" )
   , ( "font-family", "Tahoma" )
   , ( "color", "white" )
+  , ( "position", "relative" )
   ]
 
 
-listItemStyle : List ( String, String )
-listItemStyle =
+listItemStyle : Int -> List ( String, String )
+listItemStyle position =
   [ ( "display", "flex" )
   , ( "flex-flow", "row" )
   , ( "height", "2rem" )
   , ( "align-items", "center" )
   , ( "padding", "0.5rem" )
-  , ( "margin", "0.25rem 0" )
   , ( "box-sizing", "border-box" )
+  , ( "position", "absolute" )
+  , ( "width", "100%" )
+  , ( "transform", "translateY(" ++ (toString (position * 2)) ++ "rem)" )
+  , ( "transition", "transform 0.5s ease-out" )
   ]
 
 
