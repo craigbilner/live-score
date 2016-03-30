@@ -1,5 +1,6 @@
 module Model (..) where
 
+import PortModel
 import Table.Model as TableModel
 import Fixtures.Model as FixturesModel
 
@@ -10,8 +11,8 @@ type alias Model =
   }
 
 
-model : List TableModel.RawTableTeam -> Model
+model : List PortModel.TeamData -> Model
 model table =
-  { table = TableModel.Model table
-  , fixtures = FixturesModel.Model [] False
+  { table = TableModel.init table
+  , fixtures = FixturesModel.init table
   }

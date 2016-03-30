@@ -6,6 +6,7 @@ import Table.Model as TableModel
 import Table.Update as TableUpdate
 import Table.Styles as TableStyles
 import Update
+import PortModel
 
 
 pointsDescending : TableModel.TableTeam -> TableModel.TableTeam -> Order
@@ -21,7 +22,7 @@ pointsDescending teamA teamB =
       LT
 
 
-calcTable : TableModel.RawTableTeam -> TableModel.TableTeam
+calcTable : PortModel.TeamData -> TableModel.TableTeam
 calcTable { team, won, drawn, lost, gFor, gAgainst } =
   let
     played =

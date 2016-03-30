@@ -1,6 +1,7 @@
 const data = {
   table: [
     {
+      "id": 1,
       "team": "Arsenal",
       "won": 16,
       "drawn": 7,
@@ -9,6 +10,7 @@ const data = {
       "gAgainst": 30
     },
     {
+      "id": 2,
       "team": "Aston Villa",
       "won": 3,
       "drawn": 7,
@@ -17,6 +19,7 @@ const data = {
       "gAgainst": 58
     },
     {
+      "id": 3,
       "team": "Bournemouth",
       "won": 10,
       "drawn": 8,
@@ -25,6 +28,7 @@ const data = {
       "gAgainst": 50
     },
     {
+      "id": 4,
       "team": "Chelsea",
       "won": 10,
       "drawn": 11,
@@ -33,6 +37,7 @@ const data = {
       "gAgainst": 41
     },
     {
+      "id": 5,
       "team": "Crystal Palace",
       "won": 9,
       "drawn": 6,
@@ -41,6 +46,7 @@ const data = {
       "gAgainst": 40
     },
     {
+      "id": 6,
       "team": "Everton",
       "won": 9,
       "drawn": 11,
@@ -49,6 +55,7 @@ const data = {
       "gAgainst": 41
     },
     {
+      "id": 7,
       "team": "Leicester",
       "won": 19,
       "drawn": 9,
@@ -57,6 +64,7 @@ const data = {
       "gAgainst": 31
     },
     {
+      "id": 8,
       "team": "Liverpool",
       "won": 12,
       "drawn": 8,
@@ -65,6 +73,7 @@ const data = {
       "gAgainst": 40
     },
     {
+      "id": 9,
       "team": "Man City",
       "won": 15,
       "drawn": 6,
@@ -73,6 +82,7 @@ const data = {
       "gAgainst": 32
     },
     {
+      "id": 10,
       "team": "Man Utd",
       "won": 14,
       "drawn": 8,
@@ -81,6 +91,7 @@ const data = {
       "gAgainst": 27
     },
     {
+      "id": 11,
       "team": "Newcastle",
       "won": 6,
       "drawn": 7,
@@ -89,6 +100,7 @@ const data = {
       "gAgainst": 55
     },
     {
+      "id": 12,
       "team": "Norwich",
       "won": 7,
       "drawn": 7,
@@ -97,6 +109,7 @@ const data = {
       "gAgainst": 54
     },
     {
+      "id": 13,
       "team": "Southampton",
       "won": 13,
       "drawn": 8,
@@ -105,6 +118,7 @@ const data = {
       "gAgainst": 32
     },
     {
+      "id": 14,
       "team": "Stoke",
       "won": 13,
       "drawn": 7,
@@ -113,6 +127,7 @@ const data = {
       "gAgainst": 37
     },
     {
+      "id": 15,
       "team": "Sunderland",
       "won": 6,
       "drawn": 8,
@@ -121,6 +136,7 @@ const data = {
       "gAgainst": 55
     },
     {
+      "id": 16,
       "team": "Swansea",
       "won": 9,
       "drawn": 9,
@@ -129,6 +145,7 @@ const data = {
       "gAgainst": 40
     },
     {
+      "id": 17,
       "team": "Tottenham",
       "won": 17,
       "drawn": 10,
@@ -137,6 +154,7 @@ const data = {
       "gAgainst": 24
     },
     {
+      "id": 18,
       "team": "Watford",
       "won": 10,
       "drawn": 7,
@@ -145,6 +163,7 @@ const data = {
       "gAgainst": 32
     },
     {
+      "id": 19,
       "team": "West Brom",
       "won": 10,
       "drawn": 9,
@@ -153,6 +172,7 @@ const data = {
       "gAgainst": 37
     },
     {
+      "id": 20,
       "team": "West Ham",
       "won": 13,
       "drawn": 11,

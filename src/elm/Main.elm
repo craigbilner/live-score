@@ -6,11 +6,12 @@ import StartApp.Simple as StartApp
 import Table.Model as TableModel
 import Fixtures.Model as FixturesModel
 import Model
+import PortModel
 import Update
 import View
 
 
-port table : List TableModel.RawTableTeam
+port table : List PortModel.TeamData
 main =
   StartApp.start
     { model = Model.model table

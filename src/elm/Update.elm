@@ -1,6 +1,7 @@
 module Update (..) where
 
 import Model
+import Fixtures.Update as FixturesUpdate
 
 
 type Action
@@ -11,8 +12,4 @@ update : Action -> Model.Model -> Model.Model
 update action model =
   case action of
     GenerateFixtures ->
-      let
-        fixtures =
-          model.fixtures
-      in
-        { model | fixtures = { fixtures | isGenerated = True } }
+      { model | fixtures = FixturesUpdate.generateFixtures model.fixtures }

@@ -1,14 +1,6 @@
 module Table.Model (..) where
 
-
-type alias RawTableTeam =
-  { team : String
-  , won : Int
-  , drawn : Int
-  , lost : Int
-  , gFor : Int
-  , gAgainst : Int
-  }
+import PortModel
 
 
 type alias TableTeam =
@@ -26,5 +18,10 @@ type alias TableTeam =
 
 
 type alias Model =
-  { data : List RawTableTeam
+  { data : List PortModel.TeamData
   }
+
+
+init : List PortModel.TeamData -> Model
+init teamData =
+  Model teamData
