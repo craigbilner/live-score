@@ -180,7 +180,8 @@ const data = {
       "gFor": 47,
       "gAgainst": 35
     }
-  ]
+  ],
+  time: Date.now()
 };
 
 Elm.fullscreen(Elm.Main, data);

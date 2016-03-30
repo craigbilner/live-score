@@ -12,9 +12,16 @@ type alias Team =
 type alias Model =
   { teams : List Team
   , isGenerated : Bool
+  , time : Int
+  , fixtures : List ( Team, Team )
   }
 
 
-init : List PortModel.TeamData -> Model
-init teamData =
-  Model [] False
+toMeta : PortModel.TeamData -> Team
+toMeta { id, team } =
+  Team id team
+
+
+init : List PortModel.TeamData -> Int -> Model
+init teamData time =
+  Model (List.map toMeta teamData) False time []

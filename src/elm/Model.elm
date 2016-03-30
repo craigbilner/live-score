@@ -11,8 +11,8 @@ type alias Model =
   }
 
 
-model : List PortModel.TeamData -> Model
-model table =
+model : List PortModel.TeamData -> Int -> Model
+model table time =
   { table = TableModel.init table
-  , fixtures = FixturesModel.init table
+  , fixtures = FixturesModel.init table time
   }

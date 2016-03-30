@@ -12,9 +12,10 @@ import View
 
 
 port table : List PortModel.TeamData
+port time : Int
 main =
   StartApp.start
-    { model = Model.model table
+    { model = Model.model table time
     , view = View.view
     , update = Update.update
     }
