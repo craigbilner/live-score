@@ -45,26 +45,44 @@ shuffleTuples initInt pairs =
     |> List.map snd
 
 
-teamToTuple : FixturesModel.Team -> ( Int, String )
-teamToTuple { id, name } =
-  ( id, name )
+matchesAnyPart : ( Int, Int ) -> ( Int, Int ) -> Bool
+matchesAnyPart ( idA, idB ) ( idC, idD ) =
+  idA == idC || idA == idD || idB == idC || idB == idD
 
 
-safeGet : Int -> Dict.Dict Int String -> String
+takeUnique : Int -> List ( Int, Int ) -> List ( Int, Int ) -> List ( Int, Int )
+takeUnique toTake uniques pairs =
+  if (List.length uniques < toTake) == True then
+    case pairs of
+      [] ->
+        pairs
+
+      x :: xs ->
+        let
+          inList =
+            List.any (matchesAnyPart x) uniques
+        in
+          if inList == True then
+            takeUnique toTake uniques xs
+          else
+            takeUnique toTake (x :: uniques) xs
+  else
+    uniques
+
+
+teamToTuple : FixturesModel.Team -> ( Int, FixturesModel.Team )
+teamToTuple team =
+  ( team.id, team )
+
+
+safeGet : Int -> Dict.Dict Int FixturesModel.Team -> FixturesModel.Team
 safeGet key =
-  Maybe.withDefault "" << Dict.get key
+  Maybe.withDefault (FixturesModel.Team 0 "" 0 []) << Dict.get key
 
 
-pairsToTeams : Dict.Dict Int String -> ( Int, Int ) -> ( FixturesModel.Team, FixturesModel.Team )
+pairsToTeams : Dict.Dict Int FixturesModel.Team -> ( Int, Int ) -> ( FixturesModel.Team, FixturesModel.Team )
 pairsToTeams dict pair =
-  let
-    teamA =
-      safeGet (fst pair) dict
-
-    teamB =
-      safeGet (snd pair) dict
-  in
-    ( FixturesModel.Team (fst pair) teamA, FixturesModel.Team (snd pair) teamB )
+  ( safeGet (fst pair) dict, safeGet (snd pair) dict )
 
 
 generateFixtures : FixturesModel.Model -> FixturesModel.Model
@@ -79,6 +97,7 @@ generateFixtures model =
     fixtures =
       zipUnique ids ids []
         |> shuffleTuples model.time
+        |> takeUnique 10 []
         |> List.map (pairsToTeams dict)
   in
     { model | fixtures = fixtures }
