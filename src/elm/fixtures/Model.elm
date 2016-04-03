@@ -23,11 +23,23 @@ type alias Team =
   }
 
 
+type Weather
+  = Sunny
+  | Rainy
+  | Cloudy
+
+
+type alias Fixture =
+  { weather : Weather
+  , teams : ( Team, Team )
+  }
+
+
 type alias Model =
   { teams : List Team
   , isGenerated : Bool
   , time : Int
-  , fixtures : List ( Team, Team )
+  , fixtures : List Fixture
   }
 
 

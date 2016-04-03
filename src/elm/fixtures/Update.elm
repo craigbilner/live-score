@@ -85,6 +85,16 @@ pairsToTeams dict pair =
   ( safeGet (fst pair) dict, safeGet (snd pair) dict )
 
 
+generateWeather : Int -> FixturesModel.Weather
+generateWeather seed =
+  FixturesModel.Sunny
+
+
+teamsToFixture : Int -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
+teamsToFixture initSeedInt pair =
+  FixturesModel.Fixture (generateWeather initSeedInt) pair
+
+
 generateFixtures : FixturesModel.Model -> FixturesModel.Model
 generateFixtures model =
   let
@@ -94,10 +104,10 @@ generateFixtures model =
     dict =
       Dict.fromList (List.map teamToTuple model.teams)
 
-    fixtures =
+    teams =
       zipUnique ids ids []
         |> shuffleTuples model.time
         |> takeUnique 10 []
         |> List.map (pairsToTeams dict)
   in
-    { model | fixtures = fixtures }
+    { model | fixtures = List.map (teamsToFixture model.time) teams }

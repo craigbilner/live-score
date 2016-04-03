@@ -8,16 +8,16 @@ import Fixtures.Views.FixtureStyles as Styles
 import Fixtures.Views.Side as Side
 
 
-view : ( FixturesModel.Team, FixturesModel.Team ) -> Html.Html
-view ( home, away ) =
+view : FixturesModel.Fixture -> Html.Html
+view fixture =
   div
     [ style Styles.card ]
     [ div
         [ style Styles.row ]
-        [ Side.view home
+        [ Side.view (fst fixture.teams)
         , div
             []
             [ text "VS" ]
-        , Side.view away
+        , Side.view (snd fixture.teams)
         ]
     ]

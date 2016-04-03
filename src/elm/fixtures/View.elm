@@ -14,6 +14,9 @@ view address model =
     [ button
         [ onClick address Update.GenerateFixtures ]
         [ text "create fixtures" ]
+    , button
+        [ onClick address Update.Start ]
+        [ text "kick off" ]
     , div
         []
         (List.map Fixture.view model.fixtures)
