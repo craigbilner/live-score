@@ -1,6 +1,6 @@
 module View (..) where
 
-import Html exposing (div, text)
+import Html exposing (div)
 import Html.Attributes exposing (style)
 import Model
 import Update

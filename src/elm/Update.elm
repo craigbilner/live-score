@@ -13,8 +13,8 @@ type Action
   | UpdateTime Time
 
 
-getFixtures : FixturesModel.Model -> Bool -> FixturesModel.Model
-getFixtures model isPlaying =
+updateTime : FixturesModel.Model -> Bool -> FixturesModel.Model
+updateTime model isPlaying =
   let
     newTime =
       if isPlaying then
@@ -25,8 +25,8 @@ getFixtures model isPlaying =
     { model | gameTime = newTime }
 
 
-updateTime : Model.Model -> Model.Model
-updateTime model =
+updateIsPlaying : Model.Model -> Model.Model
+updateIsPlaying model =
   let
     isPlaying =
       model.isPlaying && not (model.fixtures.gameTime == 45 || model.fixtures.gameTime == 90)
@@ -54,9 +54,9 @@ update action model =
     UpdateTime time ->
       let
         newFixtures =
-          getFixtures model.fixtures model.isPlaying
+          updateTime model.fixtures model.isPlaying
 
         model =
-          updateTime { model | fixtures = newFixtures }
+          updateIsPlaying { model | fixtures = newFixtures }
       in
         ( model, Effects.none )
