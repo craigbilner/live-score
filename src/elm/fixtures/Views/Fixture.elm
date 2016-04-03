@@ -1,48 +1,23 @@
 module Fixtures.Views.Fixture (..) where
 
 import Html exposing (div, text)
+import Html.Attributes exposing (style)
 import Fixtures.Model as FixturesModel
 import Fixtures.Views.Scorers as Scorers
+import Fixtures.Views.FixtureStyles as Styles
+import Fixtures.Views.Side as Side
 
 
 view : ( FixturesModel.Team, FixturesModel.Team ) -> Html.Html
 view ( home, away ) =
   div
-    []
+    [ style Styles.card ]
     [ div
-        []
-        [ div
-            []
-            [ text home.name ]
+        [ style Styles.row ]
+        [ Side.view home
         , div
             []
             [ text "VS" ]
-        , div
-            []
-            [ text away.name ]
-        ]
-    , div
-        []
-        [ div
-            []
-            [ text <| toString home.score ]
-        , div
-            []
-            []
-        , div
-            []
-            [ text <| toString away.score ]
-        ]
-    , div
-        []
-        [ div
-            []
-            (List.map Scorers.view home.scorers)
-        , div
-            []
-            []
-        , div
-            []
-            (List.map Scorers.view away.scorers)
+        , Side.view away
         ]
     ]

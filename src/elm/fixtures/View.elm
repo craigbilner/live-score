@@ -16,8 +16,5 @@ view address model =
         [ text "create fixtures" ]
     , div
         []
-        [ text (toString model.isGenerated) ]
-    , div
-        []
         (List.map Fixture.view model.fixtures)
     ]
