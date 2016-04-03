@@ -2,6 +2,7 @@ module Fixtures.Update (..) where
 
 import Random
 import Dict
+import Utils
 import Fixtures.Model as FixturesModel
 
 
@@ -75,14 +76,9 @@ teamToTuple team =
   ( team.id, team )
 
 
-safeGet : Int -> Dict.Dict Int FixturesModel.Team -> FixturesModel.Team
-safeGet key =
-  Maybe.withDefault (FixturesModel.emptyTeam) << Dict.get key
-
-
 pairsToTeams : Dict.Dict Int FixturesModel.Team -> ( Int, Int ) -> ( FixturesModel.Team, FixturesModel.Team )
 pairsToTeams dict pair =
-  ( safeGet (fst pair) dict, safeGet (snd pair) dict )
+  ( Utils.safeGetTeam (fst pair) dict, Utils.safeGetTeam (snd pair) dict )
 
 
 generateWeather : Int -> FixturesModel.Weather
