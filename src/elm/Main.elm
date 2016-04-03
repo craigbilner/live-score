@@ -11,13 +11,13 @@ import View
 
 
 port table : List PortModel.TeamData
-port time : Int
+port currentTime : Int
 app =
   StartApp.start
     { init = init
     , update = Update.update
     , view = View.view
-    , inputs = []
+    , inputs = inputs
     }
 
 
@@ -32,8 +32,9 @@ port tasks =
 
 init : ( Model.Model, Effects Update.Action )
 init =
-  ( Model.model table time, Effects.none )
+  ( Model.model table currentTime, Effects.none )
 
 
-input =
-  Time.every second
+inputs =
+  [ Signal.map Update.UpdateTime <| Time.every second
+  ]

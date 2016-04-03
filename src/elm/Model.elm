@@ -3,6 +3,7 @@ module Model (..) where
 import PortModel
 import Table.Model as TableModel
 import Fixtures.Model as FixturesModel
+import Time exposing (Time)
 
 
 type alias Model =
@@ -13,8 +14,8 @@ type alias Model =
 
 
 model : List PortModel.TeamData -> Int -> Model
-model table time =
+model table seedInt =
   { table = TableModel.init table
-  , fixtures = FixturesModel.init table time
+  , fixtures = FixturesModel.init table seedInt
   , isPlaying = False
   }

@@ -116,8 +116,8 @@ generateFixtures model =
 
     teams =
       zipUnique ids ids []
-        |> shuffleTuples model.time
+        |> shuffleTuples model.seedInt
         |> takeUnique 10 []
         |> List.map (pairsToTeams dict)
   in
-    { model | fixtures = List.map (teamsToFixture model.time) teams }
+    { model | fixtures = List.map (teamsToFixture model.seedInt) teams }

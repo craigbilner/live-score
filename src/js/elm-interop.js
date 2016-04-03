@@ -181,7 +181,7 @@ const data = {
       "gAgainst": 35
     }
   ],
-  time: Date.now()
+  currentTime: Date.now()
 };
 
 Elm.fullscreen(Elm.Main, data);

@@ -19,5 +19,8 @@ view address model =
         [ text "kick off" ]
     , div
         []
+        [ text <| toString model.gameTime ]
+    , div
+        []
         (List.map Fixture.view model.fixtures)
     ]

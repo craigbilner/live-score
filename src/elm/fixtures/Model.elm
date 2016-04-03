@@ -1,5 +1,6 @@
 module Fixtures.Model (..) where
 
+import Time exposing (Time)
 import PortModel
 
 
@@ -52,8 +53,9 @@ type alias Fixture =
 type alias Model =
   { teams : List Team
   , isGenerated : Bool
-  , time : Int
+  , seedInt : Int
   , fixtures : List Fixture
+  , gameTime : Int
   }
 
 
@@ -64,4 +66,4 @@ toMeta { id, team } =
 
 init : List PortModel.TeamData -> Int -> Model
 init teamData time =
-  Model (List.map toMeta teamData) False time []
+  Model (List.map toMeta teamData) False time [] 0
