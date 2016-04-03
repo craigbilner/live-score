@@ -105,6 +105,21 @@ teamsToFixture initSeedInt pair =
     FixturesModel.Fixture weather kickOff kickOff weatherAffected pair
 
 
+updateGame : FixturesModel.Fixture -> FixturesModel.Fixture
+updateGame fixture =
+  let
+    homeTeam =
+      fst fixture.teams
+
+    awayTeam =
+      snd fixture.teams
+
+    updatedHomeTeam =
+      { homeTeam | score = homeTeam.score + 1 }
+  in
+    { fixture | teams = ( updatedHomeTeam, awayTeam ) }
+
+
 generateFixtures : FixturesModel.Model -> FixturesModel.Model
 generateFixtures model =
   let
@@ -121,3 +136,24 @@ generateFixtures model =
         |> List.map (pairsToTeams dict)
   in
     { model | fixtures = List.map (teamsToFixture model.seedInt) teams }
+
+
+updateFixtures : FixturesModel.Model -> Bool -> FixturesModel.Model
+updateFixtures model isPlaying =
+  let
+    newTime =
+      if isPlaying then
+        model.gameTime + 1
+      else
+        model.gameTime
+
+    newGames =
+      if isPlaying then
+        List.map updateGame model.fixtures
+      else
+        model.fixtures
+  in
+    { model
+      | gameTime = newTime
+      , fixtures = newGames
+    }

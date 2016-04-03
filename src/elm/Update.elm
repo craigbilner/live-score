@@ -5,24 +5,13 @@ import Time exposing (Time)
 import Model
 import Fixtures.Update as FixturesUpdate
 import Fixtures.Model as FixturesModel
+import Table.Update as TableUpdate
 
 
 type Action
   = GenerateFixtures
   | Start
   | UpdateTime Time
-
-
-updateTime : FixturesModel.Model -> Bool -> FixturesModel.Model
-updateTime model isPlaying =
-  let
-    newTime =
-      if isPlaying then
-        model.gameTime + 1
-      else
-        model.gameTime
-  in
-    { model | gameTime = newTime }
 
 
 updateIsPlaying : Model.Model -> Model.Model
@@ -54,9 +43,16 @@ update action model =
     UpdateTime time ->
       let
         newFixtures =
-          updateTime model.fixtures model.isPlaying
+          FixturesUpdate.updateFixtures model.fixtures model.isPlaying
 
-        model =
-          updateIsPlaying { model | fixtures = newFixtures }
+        newTable =
+          TableUpdate.updateTable model.table newFixtures.fixtures model.isPlaying
+
+        newModel =
+          updateIsPlaying
+            { model
+              | fixtures = newFixtures
+              , table = newTable
+            }
       in
-        ( model, Effects.none )
+        ( newModel, Effects.none )
