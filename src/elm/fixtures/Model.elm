@@ -15,12 +15,23 @@ type alias Scorer =
   }
 
 
+type PitchSide
+  = Left
+  | Right
+  | Neither
+
+
 type alias Team =
   { id : Int
   , name : String
   , score : Int
   , scorers : List Scorer
+  , side : PitchSide
   }
+
+
+emptyTeam =
+  Team 0 "" 0 [] Neither
 
 
 type Weather
@@ -31,6 +42,9 @@ type Weather
 
 type alias Fixture =
   { weather : Weather
+  , kickOff : Int
+  , hasPossession : Int
+  , weatherAffected : PitchSide
   , teams : ( Team, Team )
   }
 
@@ -45,7 +59,7 @@ type alias Model =
 
 toMeta : PortModel.TeamData -> Team
 toMeta { id, team } =
-  Team id team 0 []
+  Team id team 0 [] Neither
 
 
 init : List PortModel.TeamData -> Int -> Model

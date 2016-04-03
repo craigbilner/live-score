@@ -77,7 +77,7 @@ teamToTuple team =
 
 safeGet : Int -> Dict.Dict Int FixturesModel.Team -> FixturesModel.Team
 safeGet key =
-  Maybe.withDefault (FixturesModel.Team 0 "" 0 []) << Dict.get key
+  Maybe.withDefault (FixturesModel.emptyTeam) << Dict.get key
 
 
 pairsToTeams : Dict.Dict Int FixturesModel.Team -> ( Int, Int ) -> ( FixturesModel.Team, FixturesModel.Team )
@@ -92,7 +92,17 @@ generateWeather seed =
 
 teamsToFixture : Int -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
 teamsToFixture initSeedInt pair =
-  FixturesModel.Fixture (generateWeather initSeedInt) pair
+  let
+    weather =
+      generateWeather initSeedInt
+
+    kickOff =
+      (fst pair).id
+
+    weatherAffected =
+      FixturesModel.Neither
+  in
+    FixturesModel.Fixture weather kickOff kickOff weatherAffected pair
 
 
 generateFixtures : FixturesModel.Model -> FixturesModel.Model

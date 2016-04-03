@@ -1,10 +1,9 @@
 module Main (..) where
 
-import Html exposing (div, ul, li, text)
-import Html.Attributes exposing (style)
-import StartApp.Simple as StartApp
-import Table.Model as TableModel
-import Fixtures.Model as FixturesModel
+import StartApp
+import Task
+import Effects exposing (Never, Effects)
+import Time exposing (second)
 import Model
 import PortModel
 import Update
@@ -13,9 +12,28 @@ import View
 
 port table : List PortModel.TeamData
 port time : Int
-main =
+app =
   StartApp.start
-    { model = Model.model table time
-    , view = View.view
+    { init = init
     , update = Update.update
+    , view = View.view
+    , inputs = []
     }
+
+
+main =
+  app.html
+
+
+port tasks : Signal (Task.Task Never ())
+port tasks =
+  app.tasks
+
+
+init : ( Model.Model, Effects Update.Action )
+init =
+  ( Model.model table time, Effects.none )
+
+
+input =
+  Time.every second

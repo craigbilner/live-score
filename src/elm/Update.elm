@@ -1,5 +1,6 @@
 module Update (..) where
 
+import Effects exposing (Effects)
 import Model
 import Fixtures.Update as FixturesUpdate
 
@@ -9,11 +10,19 @@ type Action
   | Start
 
 
-update : Action -> Model.Model -> Model.Model
+update : Action -> Model.Model -> ( Model.Model, Effects Action )
 update action model =
   case action of
     GenerateFixtures ->
-      { model | fixtures = FixturesUpdate.generateFixtures model.fixtures }
+      let
+        model =
+          { model | fixtures = FixturesUpdate.generateFixtures model.fixtures }
+      in
+        ( model, Effects.none )
 
     Start ->
-      { model | isPlaying = True }
+      let
+        model =
+          { model | isPlaying = True }
+      in
+        ( model, Effects.none )
