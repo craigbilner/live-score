@@ -4,12 +4,34 @@ import Effects exposing (Effects)
 import Time exposing (Time)
 import Model
 import Fixtures.Update as FixturesUpdate
+import Fixtures.Model as FixturesModel
 
 
 type Action
   = GenerateFixtures
   | Start
   | UpdateTime Time
+
+
+getFixtures : FixturesModel.Model -> Bool -> FixturesModel.Model
+getFixtures model isPlaying =
+  let
+    newTime =
+      if isPlaying then
+        model.gameTime + 1
+      else
+        model.gameTime
+  in
+    { model | gameTime = newTime }
+
+
+updateTime : Model.Model -> Model.Model
+updateTime model =
+  let
+    isPlaying =
+      model.isPlaying && not (model.fixtures.gameTime == 45 || model.fixtures.gameTime == 90)
+  in
+    { model | isPlaying = isPlaying }
 
 
 update : Action -> Model.Model -> ( Model.Model, Effects Action )
@@ -31,10 +53,10 @@ update action model =
 
     UpdateTime time ->
       let
-        fixtures =
-          model.fixtures
+        newFixtures =
+          getFixtures model.fixtures model.isPlaying
 
         model =
-          { model | fixtures = { fixtures | gameTime = fixtures.gameTime + 1 } }
+          updateTime { model | fixtures = newFixtures }
       in
         ( model, Effects.none )
