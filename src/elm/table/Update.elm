@@ -69,8 +69,8 @@ updateTable table fixtures isPlaying =
 
     newData =
       if isPlaying then
-        List.map (updateTeam flatFixtures) table.data
+        List.map (updateTeam flatFixtures) table.init
       else
-        table.data
+        table.current
   in
-    { table | data = newData }
+    { table | current = newData }

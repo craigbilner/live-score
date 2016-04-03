@@ -120,7 +120,7 @@ view : Signal.Address Update.Action -> TableModel.Model -> Html.Html
 view address model =
   let
     rows =
-      model.data
+      model.current
         |> List.map calcTable
         |> List.sortWith pointsDescending
         |> List.indexedMap applyPositions

@@ -18,10 +18,11 @@ type alias TableTeam =
 
 
 type alias Model =
-  { data : List PortModel.TeamData
+  { init : List PortModel.TeamData
+  , current : List PortModel.TeamData
   }
 
 
 init : List PortModel.TeamData -> Model
 init teamData =
-  Model teamData
+  Model teamData teamData
