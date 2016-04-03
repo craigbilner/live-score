@@ -6,6 +6,7 @@ import Model
 import Fixtures.Update as FixturesUpdate
 import Fixtures.Model as FixturesModel
 import Table.Update as TableUpdate
+import Games.Update as GamesUpdate
 
 
 type Action
@@ -43,7 +44,7 @@ update action model =
     UpdateTime time ->
       let
         newFixtures =
-          FixturesUpdate.updateFixtures model.fixtures model.isPlaying
+          GamesUpdate.update model.fixtures model.isPlaying
 
         newTable =
           TableUpdate.updateTable model.table newFixtures.fixtures model.isPlaying
