@@ -45,75 +45,91 @@ applyPositions pos team =
 tableHead : Html.Html
 tableHead =
   li
-    [ style ((TableStyles.listItemStyle 0) ++ TableStyles.headListItemStyle) ]
+    [ style ((TableStyles.listItem 0) ++ TableStyles.headListItem) ]
     [ div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "pos" ]
     , div
-        [ style (TableStyles.cellStyle ++ TableStyles.teamCellStyle) ]
+        [ style (TableStyles.cell ++ TableStyles.teamCell) ]
         [ text "team" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "played" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "won" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "drawn" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "lost" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "for" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "against" ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "goal diff." ]
     , div
-        [ style TableStyles.cellStyle ]
+        [ style TableStyles.cell ]
         [ text "points" ]
     ]
 
 
-mapTable : List ( String, String ) -> TableModel.TableTeam -> Html.Html
-mapTable customStyle { team, won, drawn, lost, gFor, gAgainst, played, gd, points, position } =
-  li
-    [ style ((TableStyles.listItemStyle position) ++ customStyle) ]
-    [ div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString position ]
-    , div
-        [ style (TableStyles.cellStyle ++ TableStyles.teamCellStyle) ]
-        [ text team ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString played ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString won ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString drawn ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString lost ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString gFor ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString gAgainst ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString gd ]
-    , div
-        [ style TableStyles.cellStyle ]
-        [ text <| toString points ]
-    ]
+getRowStyle : Int -> List ( String, String )
+getRowStyle position =
+  if position <= 4 then
+    TableStyles.topFour
+  else if position <= 6 then
+    TableStyles.europe
+  else if position <= 17 then
+    TableStyles.mid
+  else
+    TableStyles.relegation
+
+
+mapTable : TableModel.TableTeam -> Html.Html
+mapTable { team, won, drawn, lost, gFor, gAgainst, played, gd, points, position } =
+  let
+    customStyle =
+      getRowStyle position
+  in
+    li
+      [ style ((TableStyles.listItem position) ++ customStyle) ]
+      [ div
+          [ style TableStyles.cell ]
+          [ text <| toString position ]
+      , div
+          [ style (TableStyles.cell ++ TableStyles.teamCell) ]
+          [ text team ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString played ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString won ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString drawn ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString lost ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString gFor ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString gAgainst ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString gd ]
+      , div
+          [ style TableStyles.cell ]
+          [ text <| toString points ]
+      ]
 
 
 view : Signal.Address Update.Action -> TableModel.Model -> Html.Html
@@ -124,31 +140,9 @@ view address model =
         |> List.map calcTable
         |> List.sortWith pointsDescending
         |> List.indexedMap applyPositions
-
-    topFour =
-      List.partition (\x -> x.position <= 4) rows
-
-    europe =
-      List.partition (\x -> x.position <= 6) (snd topFour)
-
-    midTable =
-      List.partition (\x -> x.position <= 17) (snd europe)
-
-    topFourRows =
-      List.map (mapTable TableStyles.topFourStyle) (fst topFour)
-
-    europeRows =
-      List.map (mapTable TableStyles.europeStyle) (fst europe)
-
-    midTableRows =
-      List.map (mapTable TableStyles.midStyle) (fst midTable)
-
-    relegationRows =
-      List.map (mapTable TableStyles.relegationStyle) (snd midTable)
-
-    htmlRows =
-      List.concat [ topFourRows, europeRows, midTableRows, relegationRows ]
+        |> List.sortBy .team
+        |> List.map mapTable
   in
     ul
-      [ style TableStyles.listStyle ]
-      (tableHead :: htmlRows)
+      [ style TableStyles.list ]
+      (tableHead :: rows)

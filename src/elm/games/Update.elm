@@ -8,7 +8,7 @@ updateTeam : Int -> FixturesModel.Team -> FixturesModel.Team
 updateTeam random team =
   let
     hasScored =
-      random < 50
+      random < 10
 
     newScore =
       if hasScored == True then
@@ -39,42 +39,27 @@ updateGame fixture ( r1, r2 ) =
 
 update : FixturesModel.Model -> Bool -> FixturesModel.Model
 update model isPlaying =
-  let
-    newTime =
-      if isPlaying then
-        model.gameTime + 1
-      else
-        model.gameTime
+  if isPlaying then
+    let
+      generator =
+        Random.list (List.length model.fixtures) (Random.int 0 100)
 
-    newGames =
-      if isPlaying then
-        let
-          generator =
-            Random.list (List.length model.fixtures) (Random.int 0 100)
+      randomList1 =
+        Random.generate generator model.seed
 
-          seed1 =
-            Random.initialSeed model.seedInt
+      randomList2 =
+        Random.generate generator (snd randomList1)
 
-          seed2 =
-            Random.initialSeed (model.seedInt + 1)
+      randomList =
+        List.map2 (,) (fst randomList1) (fst randomList2)
 
-          randomList1 =
-            Random.generate generator seed1
-              |> fst
-
-          randomList2 =
-            Random.generate generator seed2
-              |> fst
-
-          randomList =
-            List.map2 (,) randomList1 randomList2
-        in
-          List.map2 updateGame model.fixtures randomList
-      else
-        model.fixtures
-  in
-    { model
-      | gameTime = newTime
-      , fixtures = newGames
-      , seedInt = model.seedInt + 1
-    }
+      newGames =
+        List.map2 updateGame model.fixtures randomList
+    in
+      { model
+        | gameTime = model.gameTime + 1
+        , fixtures = newGames
+        , seed = snd randomList2
+      }
+  else
+    model

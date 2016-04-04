@@ -1,8 +1,8 @@
 module Table.Styles (..) where
 
 
-listStyle : List ( String, String )
-listStyle =
+list : List ( String, String )
+list =
   [ ( "list-style-type", "none" )
   , ( "margin", "0" )
   , ( "padding", "0" )
@@ -13,8 +13,8 @@ listStyle =
   ]
 
 
-listItemStyle : Int -> List ( String, String )
-listItemStyle position =
+listItem : Int -> List ( String, String )
+listItem position =
   [ ( "display", "flex" )
   , ( "flex-flow", "row" )
   , ( "height", "2rem" )
@@ -28,57 +28,57 @@ listItemStyle position =
   ]
 
 
-positionStyle : String -> List ( String, String )
-positionStyle colour =
+position : String -> List ( String, String )
+position colour =
   [ ( "background-color", colour )
   ]
 
 
-topFourStyle : List ( String, String )
-topFourStyle =
-  positionStyle "rgb(25, 120, 25)"
+topFour : List ( String, String )
+topFour =
+  position "rgb(25, 120, 25)"
 
 
-europeStyle : List ( String, String )
-europeStyle =
-  positionStyle "rgb(120, 120, 25)"
+europe : List ( String, String )
+europe =
+  position "rgb(120, 120, 25)"
 
 
-midStyle : List ( String, String )
-midStyle =
-  positionStyle "rgb(25, 25, 120)"
+mid : List ( String, String )
+mid =
+  position "rgb(25, 25, 120)"
 
 
-relegationStyle : List ( String, String )
-relegationStyle =
-  positionStyle "rgb(120, 25, 25)"
+relegation : List ( String, String )
+relegation =
+  position "rgb(120, 25, 25)"
 
 
-headListItemStyle : List ( String, String )
-headListItemStyle =
+headListItem : List ( String, String )
+headListItem =
   [ ( "color", "white" )
   , ( "text-shadow", "1px 1px 2px rgb(0, 0, 0)" )
   , ( "background-color", "rgb(178, 178, 178)" )
   ]
 
 
-cellStyle : List ( String, String )
-cellStyle =
+cell : List ( String, String )
+cell =
   [ ( "flex", "1" )
   , ( "text-align", "center" )
   ]
 
 
-headCellStyle : List ( String, String )
-headCellStyle =
+headCell : List ( String, String )
+headCell =
   [ ( "background-color", "rgb(192, 192, 192)" )
   , ( "color", "rbg(230, 230, 230)" )
   , ( "text-shadow", "1px 1px 2px black" )
   ]
 
 
-teamCellStyle : List ( String, String )
-teamCellStyle =
+teamCell : List ( String, String )
+teamCell =
   [ ( "flex", "2" )
   , ( "text-align", "left" )
   ]

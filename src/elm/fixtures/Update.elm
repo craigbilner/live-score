@@ -39,9 +39,9 @@ applyRandom seed pairs randoms =
         applyRandom (snd rand) xs (( fst rand, x ) :: randoms)
 
 
-shuffleTuples : Int -> List ( Int, Int ) -> List ( Int, Int )
-shuffleTuples initInt pairs =
-  applyRandom (Random.initialSeed initInt) pairs []
+shuffleTuples : Random.Seed -> List ( Int, Int ) -> List ( Int, Int )
+shuffleTuples seed pairs =
+  applyRandom seed pairs []
     |> List.sortBy fst
     |> List.map snd
 
@@ -81,16 +81,16 @@ pairsToTeams dict pair =
   ( Utils.safeGetTeam (fst pair) dict, Utils.safeGetTeam (snd pair) dict )
 
 
-generateWeather : Int -> FixturesModel.Weather
+generateWeather : Random.Seed -> FixturesModel.Weather
 generateWeather seed =
   FixturesModel.Sunny
 
 
-teamsToFixture : Int -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
-teamsToFixture initSeedInt pair =
+teamsToFixture : Random.Seed -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
+teamsToFixture seed pair =
   let
     weather =
-      generateWeather initSeedInt
+      generateWeather seed
 
     kickOff =
       (fst pair).id
@@ -112,8 +112,8 @@ generateFixtures model =
 
     teams =
       zipUnique ids ids []
-        |> shuffleTuples model.seedInt
+        |> shuffleTuples model.seed
         |> takeUnique 10 []
         |> List.map (pairsToTeams dict)
   in
-    { model | fixtures = List.map (teamsToFixture model.seedInt) teams }
+    { model | fixtures = List.map (teamsToFixture model.seed) teams }
