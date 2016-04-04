@@ -10,14 +10,24 @@ import Fixtures.Views.Side as Side
 
 view : FixturesModel.Fixture -> Html.Html
 view fixture =
-  div
-    [ style Styles.card ]
-    [ div
-        [ style Styles.row ]
-        [ Side.view (fst fixture.teams)
-        , div
-            []
-            [ text "VS" ]
-        , Side.view (snd fixture.teams)
-        ]
-    ]
+  let
+    kickingOff =
+      if fixture.kickOff == (fst fixture.teams).id then
+        fst fixture.teams
+      else
+        snd fixture.teams
+  in
+    div
+      [ style Styles.card ]
+      [ div
+          [ style Styles.row ]
+          [ Side.view (fst fixture.teams)
+          , div
+              []
+              [ text "VS" ]
+          , Side.view (snd fixture.teams)
+          ]
+      , div
+          []
+          [ text kickingOff.name ]
+      ]

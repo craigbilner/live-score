@@ -86,14 +86,29 @@ generateWeather seed =
   FixturesModel.Sunny
 
 
-teamsToFixture : Random.Seed -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
-teamsToFixture seed pair =
+calcKickOff : Random.Seed -> ( FixturesModel.Team, FixturesModel.Team ) -> Int
+calcKickOff seed ( home, away ) =
   let
+    randomNum =
+      Random.generate (Random.int 0 100) seed
+  in
+    if (fst randomNum) < 50 then
+      home.id
+    else
+      away.id
+
+
+teamsToFixture : Int -> ( FixturesModel.Team, FixturesModel.Team ) -> FixturesModel.Fixture
+teamsToFixture seedInt pair =
+  let
+    seed =
+      Random.initialSeed seedInt
+
     weather =
       generateWeather seed
 
     kickOff =
-      (fst pair).id
+      calcKickOff seed pair
 
     weatherAffected =
       FixturesModel.Neither
@@ -115,5 +130,11 @@ generateFixtures model =
         |> shuffleTuples model.seed
         |> takeUnique 10 []
         |> List.map (pairsToTeams dict)
+
+    generator =
+      Random.list (List.length teams) (Random.int 0 100)
+
+    randomList =
+      Random.generate generator model.seed
   in
-    { model | fixtures = List.map (teamsToFixture model.seed) teams }
+    { model | fixtures = List.map2 teamsToFixture (fst randomList) teams }

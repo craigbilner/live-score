@@ -4,19 +4,21 @@ import Random
 import Fixtures.Model as FixturesModel
 
 
-updateTeam : Int -> FixturesModel.Team -> FixturesModel.Team
-updateTeam random team =
-  let
-    hasScored =
-      random < 10
+hasScored : Int -> FixturesModel.Team -> FixturesModel.Team -> Bool
+hasScored random thisTeam otherTeam =
+  random < 2
 
+
+updateTeam : Int -> FixturesModel.Team -> FixturesModel.Team -> FixturesModel.Team
+updateTeam random thisTeam otherTeam =
+  let
     newScore =
-      if hasScored == True then
-        team.score + 1
+      if hasScored random thisTeam otherTeam == True then
+        thisTeam.score + 1
       else
-        team.score
+        otherTeam.score
   in
-    { team | score = newScore }
+    { thisTeam | score = newScore }
 
 
 updateGame : FixturesModel.Fixture -> ( Int, Int ) -> FixturesModel.Fixture
@@ -29,10 +31,10 @@ updateGame fixture ( r1, r2 ) =
       snd fixture.teams
 
     updatedHomeTeam =
-      updateTeam r1 homeTeam
+      updateTeam r1 homeTeam awayTeam
 
     updatedAwayTeam =
-      updateTeam r2 awayTeam
+      updateTeam r2 awayTeam homeTeam
   in
     { fixture | teams = ( updatedHomeTeam, updatedAwayTeam ) }
 
