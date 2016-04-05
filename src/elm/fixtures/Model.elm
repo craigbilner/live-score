@@ -61,6 +61,7 @@ type alias Fixture =
   , pitchSide : PitchSide
   , prevEvent : Event
   , currentEvent : Event
+  , commentary : List Event
   }
 
 

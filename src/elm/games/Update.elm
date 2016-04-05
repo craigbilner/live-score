@@ -72,6 +72,7 @@ updateGame fixture ( r1, r2 ) =
       | teams = ( updatedHomeTeam, updatedAwayTeam )
       , hasPossession = hasPossession
       , currentEvent = newEvent
+      , commentary = newEvent :: fixture.commentary
     }
 
 
