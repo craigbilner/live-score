@@ -1,24 +1,20 @@
 module Games.Update (..) where
 
 import Random
+import Utils
 import Fixtures.Model as FixturesModel
+import Games.WhereOnPitch as WhereOnPitch
+import Games.WhatEvent as WhatEvent
+import Games.WhoHasPossession as WhoHasPossession
 
 
-hasScored : Int -> FixturesModel.Team -> FixturesModel.Team -> Bool
-hasScored random thisTeam otherTeam =
-  random < 2
-
-
-updateTeam : Int -> FixturesModel.Team -> FixturesModel.Team -> FixturesModel.Team
-updateTeam random thisTeam otherTeam =
+hasScored : Int -> Bool
+hasScored seedInt =
   let
-    newScore =
-      if hasScored random thisTeam otherTeam == True then
-        thisTeam.score + 1
-      else
-        otherTeam.score
+    random =
+      Utils.randomInt (Random.initialSeed seedInt)
   in
-    { thisTeam | score = newScore }
+    fst random < 50
 
 
 updateGame : FixturesModel.Fixture -> ( Int, Int ) -> FixturesModel.Fixture
@@ -30,13 +26,53 @@ updateGame fixture ( r1, r2 ) =
     awayTeam =
       snd fixture.teams
 
+    newFixture =
+      WhatEvent.run ( (Random.initialSeed r1), fixture )
+        |> WhereOnPitch.run
+        |> WhoHasPossession.run
+        |> snd
+
+    hasScoredHome =
+      newFixture.hasPossession == homeTeam.id && newFixture.currentEvent == FixturesModel.Shot
+
     updatedHomeTeam =
-      updateTeam r1 homeTeam awayTeam
+      if hasScoredHome then
+        { homeTeam | score = homeTeam.score + 1 }
+      else
+        homeTeam
+
+    hasScoredAway =
+      newFixture.hasPossession == awayTeam.id && newFixture.currentEvent == FixturesModel.Shot
 
     updatedAwayTeam =
-      updateTeam r2 awayTeam homeTeam
+      if hasScoredAway then
+        { awayTeam | score = awayTeam.score + 1 }
+      else
+        awayTeam
+
+    otherTeam =
+      if newFixture.hasPossession == homeTeam.id then
+        awayTeam.id
+      else
+        homeTeam.id
+
+    hasPossession =
+      if hasScoredHome || hasScoredAway then
+        otherTeam
+      else
+        newFixture.hasPossession
+
+    newEvent =
+      if hasScoredHome || hasScoredAway then
+        FixturesModel.KickOff
+      else
+        newFixture.currentEvent
   in
-    { fixture | teams = ( updatedHomeTeam, updatedAwayTeam ) }
+    { fixture
+      | teams = ( updatedHomeTeam, updatedAwayTeam )
+      , hasPossession = hasPossession
+      , currentEvent = newEvent
+    }
 
 
 update : FixturesModel.Model -> Bool -> FixturesModel.Model

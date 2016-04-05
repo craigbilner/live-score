@@ -42,12 +42,25 @@ type Weather
   | Cloudy
 
 
+type Event
+  = KickOff
+  | GoalKick
+  | Corner
+  | Throw
+  | Pass
+  | Tackle
+  | Shot
+
+
 type alias Fixture =
   { weather : Weather
   , kickOff : Int
   , hasPossession : Int
   , weatherAffected : PitchSide
   , teams : ( Team, Team )
+  , pitchSide : PitchSide
+  , prevEvent : Event
+  , currentEvent : Event
   }
 
 
