@@ -3,7 +3,7 @@ module Main (..) where
 import StartApp
 import Task
 import Effects exposing (Never, Effects)
-import Time exposing (second)
+import Time exposing (millisecond)
 import Model
 import PortModel
 import Update
@@ -36,5 +36,5 @@ init =
 
 
 inputs =
-  [ Signal.map Update.UpdateTime <| Time.every second
+  [ Signal.map Update.UpdateTime <| Time.every millisecond
   ]

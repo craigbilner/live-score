@@ -2,72 +2,86 @@ module Games.DidAnyoneScore (..) where
 
 import Random
 import Utils
-import Fixtures.Model as FixturesModel
+import Fixtures.Model as FM
 
 
-canScore : FixturesModel.Fixture -> Int -> Bool
+canScore : FM.Fixture -> Int -> Bool
 canScore fixture id =
-  fixture.hasPossession == id && fixture.currentEvent == FixturesModel.Shot
+  fixture.hasPossession == id && fixture.currentEvent == FM.Shot
 
 
-hasScored : FixturesModel.Fixture -> Int -> Int -> Bool
+hasScored : FM.Fixture -> Int -> Int -> Bool
 hasScored fixture id random =
   canScore fixture id && random < 50
 
 
-run : ( Random.Seed, FixturesModel.Fixture ) -> ( Random.Seed, FixturesModel.Fixture )
-run ( seed, fixture ) =
+getTheOtherTeam : FM.Team -> ( FM.Team, FM.Team ) -> FM.Team
+getTheOtherTeam team pair =
+  if team.id == (fst pair).id then
+    snd pair
+  else
+    fst pair
+
+
+testTeam : ( Random.Seed, FM.Fixture, FM.Team, Bool ) -> ( Random.Seed, FM.Fixture, FM.Team, Bool )
+testTeam ( seed, fixture, team, teamScored ) =
   let
     random =
       Utils.randomInt seed
-
-    homeTeam =
-      fst fixture.teams
-
-    awayTeam =
-      snd fixture.teams
-
-    hasScoredHome =
-      hasScored fixture homeTeam.id <| fst random
-
-    updatedHomeTeam =
-      if hasScoredHome then
-        { homeTeam | score = homeTeam.score + 1 }
-      else
-        homeTeam
-
-    hasScoredAway =
-      hasScored fixture awayTeam.id <| fst random
-
-    updatedAwayTeam =
-      if hasScoredAway then
-        { awayTeam | score = awayTeam.score + 1 }
-      else
-        awayTeam
-
-    otherTeam =
-      if fixture.hasPossession == homeTeam.id then
-        awayTeam.id
-      else
-        homeTeam.id
-
-    hasPossession =
-      if hasScoredHome || hasScoredAway then
-        otherTeam
-      else
-        fixture.hasPossession
-
-    newEvent =
-      if hasScoredHome || hasScoredAway then
-        FixturesModel.KickOff
-      else
-        fixture.currentEvent
   in
-    ( snd random
-    , { fixture
-        | teams = ( updatedHomeTeam, updatedAwayTeam )
-        , hasPossession = hasPossession
-        , currentEvent = newEvent
-        , commentary = newEvent :: fixture.commentary
-      }
-    )
+    if teamScored || (hasScored fixture team.id (fst random)) then
+      ( snd random, fixture, team, True )
+    else
+      ( snd random, fixture, getTheOtherTeam team fixture.teams, False )
+
+
+updateScore : FM.Team -> Int -> FM.Team
+updateScore team id =
+  if team.id == id then
+    { team | score = team.score + 1 }
+  else
+    team
+
+
+updateTeam : ( Random.Seed, FM.Fixture, FM.Team, Bool ) -> ( Random.Seed, FM.Fixture, Maybe FM.Team )
+updateTeam ( seed, fixture, team, hasScored ) =
+  if hasScored then
+    let
+      homeTeam =
+        updateScore (fst fixture.teams) team.id
+
+      awayTeam =
+        updateScore (snd fixture.teams) team.id
+    in
+      ( seed, { fixture | teams = ( homeTeam, awayTeam ) }, Just team )
+  else
+    ( seed, fixture, Nothing )
+
+
+maybeReset : ( Random.Seed, FM.Fixture, Maybe FM.Team ) -> ( Random.Seed, FM.Fixture )
+maybeReset ( seed, fixture, scoringTeam ) =
+  case scoringTeam of
+    Just team ->
+      ( seed
+      , { fixture
+          | hasPossession = (getTheOtherTeam team fixture.teams).id
+          , currentEvent = FM.KickOff
+        }
+      )
+
+    Nothing ->
+      ( seed, fixture )
+
+
+updateCommentary : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
+updateCommentary ( seed, fixture ) =
+  ( seed, { fixture | commentary = fixture.currentEvent :: fixture.commentary } )
+
+
+run : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
+run ( seed, fixture ) =
+  testTeam ( seed, fixture, fst fixture.teams, False )
+    |> testTeam
+    |> updateTeam
+    |> maybeReset
+    |> updateCommentary
