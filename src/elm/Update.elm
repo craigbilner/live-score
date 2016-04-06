@@ -30,7 +30,7 @@ update action model =
     GenerateFixtures ->
       let
         model =
-          { model | fixtures = FixturesUpdate.generateFixtures model.fixtures }
+          { model | fixtures = (GamesUpdate.play 0) <| FixturesUpdate.generateFixtures model.fixtures }
       in
         ( model, Effects.none )
 
@@ -42,18 +42,4 @@ update action model =
         ( model, Effects.none )
 
     UpdateTime time ->
-      let
-        newFixtures =
-          GamesUpdate.update model.fixtures model.isPlaying
-
-        newTable =
-          TableUpdate.updateTable model.table newFixtures.fixtures model.isPlaying
-
-        newModel =
-          updateIsPlaying
-            { model
-              | fixtures = newFixtures
-              , table = newTable
-            }
-      in
-        ( newModel, Effects.none )
+      ( model, Effects.none )
