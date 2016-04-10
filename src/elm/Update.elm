@@ -7,6 +7,7 @@ import Fixtures.Update as FixturesUpdate
 import Fixtures.Model as FixturesModel
 import Table.Update as TableUpdate
 import Games.Update as GamesUpdate
+import LiveFeed.Update as LiveUpdate
 
 
 type Action
@@ -29,17 +30,24 @@ update action model =
   case action of
     GenerateFixtures ->
       let
-        model =
+        newModel =
           { model | fixtures = (GamesUpdate.play 0) <| FixturesUpdate.generateFixtures model.fixtures }
       in
-        ( model, Effects.none )
+        ( newModel, Effects.none )
 
     Start ->
       let
-        model =
+        newModel =
           { model | isPlaying = True }
       in
-        ( model, Effects.none )
+        ( newModel, Effects.none )
 
     UpdateTime time ->
-      ( model, Effects.none )
+      let
+        newModel =
+          if model.isPlaying then
+            { model | fixtures = LiveUpdate.run model.fixtures }
+          else
+            model
+      in
+        ( updateIsPlaying newModel, Effects.none )

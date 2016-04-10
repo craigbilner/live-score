@@ -113,7 +113,7 @@ teamsToFixture seedInt pair =
     weatherAffected =
       FixturesModel.Neither
   in
-    FixturesModel.Fixture weather kickOff kickOff weatherAffected pair FixturesModel.Neither FixturesModel.KickOff FixturesModel.KickOff []
+    FixturesModel.Fixture weather kickOff kickOff weatherAffected pair FixturesModel.Neither FixturesModel.KickOff FixturesModel.KickOff [] FixturesModel.emptyFeed
 
 
 generateFixtures : FixturesModel.Model -> FixturesModel.Model

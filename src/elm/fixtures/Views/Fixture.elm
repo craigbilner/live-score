@@ -8,11 +8,11 @@ import Fixtures.Views.FixtureStyles as Styles
 import Fixtures.Views.Side as Side
 
 
-commentaryLine : FixturesModel.Event -> Html.Html
-commentaryLine event =
+commentaryLine : String -> Html.Html
+commentaryLine line =
   li
     []
-    [ text <| toString event ]
+    [ text line ]
 
 
 view : FixturesModel.Fixture -> Html.Html
@@ -28,16 +28,16 @@ view fixture =
       [ style Styles.card ]
       [ div
           [ style Styles.row ]
-          [ Side.view (fst fixture.teams)
+          [ Side.view (fst fixture.teams) (fst fixture.liveFeed.teams)
           , div
               []
               [ text "VS" ]
-          , Side.view (snd fixture.teams)
+          , Side.view (snd fixture.teams) (snd fixture.liveFeed.teams)
           ]
       , div
           []
           [ text kickingOff.name ]
       , ul
           []
-          (List.map commentaryLine fixture.commentary)
+          (List.map commentaryLine fixture.liveFeed.commentary)
       ]

@@ -7,8 +7,8 @@ import Fixtures.Views.SideStyles as Styles
 import Fixtures.Views.Scorers as Scorers
 
 
-view : FixturesModel.Team -> Html.Html
-view team =
+view : FixturesModel.Team -> FixturesModel.LiveTeam -> Html.Html
+view team liveInfo =
   div
     [ style Styles.sideColumn ]
     [ div
@@ -16,8 +16,8 @@ view team =
         [ text team.name ]
     , div
         [ style Styles.score ]
-        [ text <| toString team.score ]
+        [ text <| toString liveInfo.score ]
     , ul
         []
-        (List.map Scorers.view team.scorers)
+        (List.map Scorers.view liveInfo.scorers)
     ]

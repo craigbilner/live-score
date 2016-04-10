@@ -52,6 +52,29 @@ type Event
   | Shot
 
 
+type alias LiveTeam =
+  { id : Int
+  , score : Int
+  , scorers : List Scorer
+  }
+
+
+emptyLiveTeam : LiveTeam
+emptyLiveTeam =
+  LiveTeam 0 0 []
+
+
+type alias LiveFeed =
+  { teams : ( LiveTeam, LiveTeam )
+  , commentary : List String
+  }
+
+
+emptyFeed : LiveFeed
+emptyFeed =
+  LiveFeed ( emptyLiveTeam, emptyLiveTeam ) []
+
+
 type alias Fixture =
   { weather : Weather
   , kickOff : Int
@@ -61,7 +84,27 @@ type alias Fixture =
   , pitchSide : PitchSide
   , prevEvent : Event
   , currentEvent : Event
-  , commentary : List Event
+  , gameHistory : List GameAction
+  , liveFeed : LiveFeed
+  }
+
+
+type alias GoalInfo =
+  { hasScored : Bool
+  , scorer : Scorer
+  , team : Int
+  }
+
+
+emptyGoal : GoalInfo
+emptyGoal =
+  GoalInfo False (Scorer "" []) 0
+
+
+type alias GameAction =
+  { event : Event
+  , commentary : String
+  , goalInfo : GoalInfo
   }
 
 

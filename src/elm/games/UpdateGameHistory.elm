@@ -4,11 +4,34 @@ import Random
 import Fixtures.Model as FM
 
 
-updateCommentary : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
-updateCommentary ( seed, fixture ) =
-  ( seed, { fixture | commentary = fixture.currentEvent :: fixture.commentary } )
+addEvent : FM.Fixture -> FM.Fixture
+addEvent fixture =
+  let
+    gameAction =
+      FM.GameAction fixture.currentEvent "" FM.emptyGoal
+  in
+    { fixture | gameHistory = gameAction :: fixture.gameHistory }
+
+
+addGoal : FM.Fixture -> FM.Fixture
+addGoal fixture =
+  let
+    goalAction =
+      FM.GameAction FM.Shot "" (FM.GoalInfo True (FM.Scorer "" []) 1)
+
+    gameAction =
+      FM.GameAction fixture.currentEvent "" FM.emptyGoal
+  in
+    { fixture | gameHistory = gameAction :: goalAction :: fixture.gameHistory }
 
 
 run : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
 run ( seed, fixture ) =
-  updateCommentary ( seed, fixture )
+  let
+    newFixture =
+      addEvent fixture
+  in
+    if fixture.currentEvent == FM.KickOff then
+      ( seed, addGoal newFixture )
+    else
+      ( seed, newFixture )

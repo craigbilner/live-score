@@ -48,4 +48,4 @@ play gameTime model =
   if gameTime <= 90 then
     play (gameTime + 1) (update model)
   else
-    model
+    { model | gameTime = 0 }
