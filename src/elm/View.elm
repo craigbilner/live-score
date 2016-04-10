@@ -1,7 +1,7 @@
 module View (..) where
 
 import Html exposing (div)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (class)
 import Model
 import Update
 import Styles
@@ -12,11 +12,11 @@ import Table.View as TableView
 view : Signal.Address Update.Action -> Model.Model -> Html.Html
 view address model =
   div
-    [ style Styles.layout ]
+    [ class "layout" ]
     [ div
-        [ style Styles.fixtures ]
+        [ class "fixtures" ]
         [ FixturesView.view address model.fixtures ]
     , div
-        [ style Styles.table ]
+        [ class "table" ]
         [ TableView.view address model.table ]
     ]
