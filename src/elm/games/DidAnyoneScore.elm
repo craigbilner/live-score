@@ -73,15 +73,9 @@ maybeReset ( seed, fixture, scoringTeam ) =
       ( seed, fixture )
 
 
-updateCommentary : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
-updateCommentary ( seed, fixture ) =
-  ( seed, { fixture | commentary = fixture.currentEvent :: fixture.commentary } )
-
-
 run : ( Random.Seed, FM.Fixture ) -> ( Random.Seed, FM.Fixture )
 run ( seed, fixture ) =
   testTeam ( seed, fixture, fst fixture.teams, False )
     |> testTeam
     |> updateTeam
     |> maybeReset
-    |> updateCommentary
