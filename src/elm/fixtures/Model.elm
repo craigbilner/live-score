@@ -59,9 +59,9 @@ type alias LiveTeam =
   }
 
 
-emptyLiveTeam : LiveTeam
-emptyLiveTeam =
-  LiveTeam 0 0 []
+emptyLiveTeam : Int -> LiveTeam
+emptyLiveTeam id =
+  LiveTeam id 0 []
 
 
 type alias LiveFeed =
@@ -70,9 +70,9 @@ type alias LiveFeed =
   }
 
 
-emptyFeed : LiveFeed
-emptyFeed =
-  LiveFeed ( emptyLiveTeam, emptyLiveTeam ) []
+emptyFeed : Int -> Int -> LiveFeed
+emptyFeed homeId awayId =
+  LiveFeed ( emptyLiveTeam homeId, emptyLiveTeam awayId ) []
 
 
 type alias Fixture =

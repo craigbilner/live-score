@@ -13,11 +13,19 @@ addEvent fixture =
     { fixture | gameHistory = gameAction :: fixture.gameHistory }
 
 
+getScoringTeam : FM.Fixture -> Int
+getScoringTeam fixture =
+  if (fst fixture.teams).id == fixture.hasPossession then
+    (snd fixture.teams).id
+  else
+    (fst fixture.teams).id
+
+
 addGoal : FM.Fixture -> FM.Fixture
 addGoal fixture =
   let
     goalAction =
-      FM.GameAction FM.Shot "" (FM.GoalInfo True (FM.Scorer "" []) 1)
+      FM.GameAction FM.Shot "" (FM.GoalInfo True (FM.Scorer "" []) (getScoringTeam fixture))
 
     gameAction =
       FM.GameAction fixture.currentEvent "" FM.emptyGoal
@@ -31,7 +39,7 @@ run ( seed, fixture ) =
     newFixture =
       addEvent fixture
   in
-    if fixture.currentEvent == FM.KickOff then
+    if fixture.currentEvent == FM.Shot then
       ( seed, addGoal newFixture )
     else
       ( seed, newFixture )
