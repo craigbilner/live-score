@@ -1,10 +1,9 @@
 module Table.View (..) where
 
 import Html exposing (ul, div, li, text)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (class, style)
 import Table.Model as TableModel
 import Table.Update as TableUpdate
-import Table.Styles as TableStyles
 import Update
 import PortModel
 
@@ -45,91 +44,77 @@ applyPositions pos team =
 tableHead : Html.Html
 tableHead =
   li
-    [ style ((TableStyles.listItem 0) ++ TableStyles.headListItem) ]
+    [ class "table_head table_row" ]
     [ div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "pos" ]
     , div
-        [ style (TableStyles.cell ++ TableStyles.teamCell) ]
+        [ class "table_cell table_cell--team" ]
         [ text "team" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "played" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "won" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "drawn" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "lost" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "for" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "against" ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "goal diff." ]
     , div
-        [ style TableStyles.cell ]
+        [ class "table_cell" ]
         [ text "points" ]
     ]
 
 
-getRowStyle : Int -> List ( String, String )
-getRowStyle position =
-  if position <= 4 then
-    TableStyles.topFour
-  else if position <= 6 then
-    TableStyles.europe
-  else if position <= 17 then
-    TableStyles.mid
-  else
-    TableStyles.relegation
-
-
 mapTable : TableModel.TableTeam -> Html.Html
 mapTable { team, won, drawn, lost, gFor, gAgainst, played, gd, points, position } =
-  let
-    customStyle =
-      getRowStyle position
-  in
-    li
-      [ style ((TableStyles.listItem position) ++ customStyle) ]
-      [ div
-          [ style TableStyles.cell ]
-          [ text <| toString position ]
-      , div
-          [ style (TableStyles.cell ++ TableStyles.teamCell) ]
-          [ text team ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString played ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString won ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString drawn ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString lost ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString gFor ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString gAgainst ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString gd ]
-      , div
-          [ style TableStyles.cell ]
-          [ text <| toString points ]
-      ]
+  li
+    [ class "table_row"
+    , style [ ( "transform", "translateY(" ++ (toString <| position * 2) ++ "rem)" ) ]
+    ]
+    [ div
+        [ class "table_cell" ]
+        [ text <| toString position ]
+    , div
+        [ class "table_cell table_cell--team" ]
+        [ text team ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString played ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString won ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString drawn ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString lost ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString gFor ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString gAgainst ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString gd ]
+    , div
+        [ class "table_cell" ]
+        [ text <| toString points ]
+    ]
 
 
 view : Signal.Address Update.Action -> TableModel.Model -> Html.Html
@@ -144,5 +129,5 @@ view address model =
         |> List.map mapTable
   in
     ul
-      [ style TableStyles.list ]
+      [ class "table" ]
       (tableHead :: rows)

@@ -4,7 +4,6 @@ import Html exposing (div)
 import Html.Attributes exposing (class)
 import Model
 import Update
-import Styles
 import Fixtures.View as FixturesView
 import Table.View as TableView
 
@@ -14,9 +13,9 @@ view address model =
   div
     [ class "layout" ]
     [ div
-        [ class "fixtures" ]
+        [ class "layout_fixtures" ]
         [ FixturesView.view address model.fixtures ]
     , div
-        [ class "table" ]
+        [ class "layout_table" ]
         [ TableView.view address model.table ]
     ]
