@@ -46,19 +46,15 @@ updateTeam teams team =
     }
 
 
+insertTeam : FM.LiveTeam -> FM.LiveTeam -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam ) -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam )
+insertTeam team otherTeam dict =
+  Dict.insert team.id ( team, otherTeam ) dict
+
+
 flattenFixtures : FM.Fixture -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam ) -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam )
 flattenFixtures fixture dict =
-  let
-    homeTeam =
-      fst fixture.liveFeed.teams
-
-    awayTeam =
-      snd fixture.liveFeed.teams
-
-    withHome =
-      Dict.insert homeTeam.id ( homeTeam, awayTeam ) dict
-  in
-    Dict.insert awayTeam.id ( awayTeam, homeTeam ) withHome
+  insertTeam (fst fixture.liveFeed.teams) (snd fixture.liveFeed.teams) dict
+    |> insertTeam (snd fixture.liveFeed.teams) (fst fixture.liveFeed.teams)
 
 
 run : TableModel.Model -> List FM.Fixture -> TableModel.Model

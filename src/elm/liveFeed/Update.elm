@@ -26,7 +26,7 @@ addGoal goalInfo liveFeed =
 updateFeed : FixturesModel.GameAction -> FixturesModel.LiveFeed -> FixturesModel.LiveFeed
 updateFeed { event, commentary, goalInfo } liveFeed =
   if goalInfo.hasScored then
-    (addGoal goalInfo liveFeed)
+    addGoal goalInfo liveFeed
   else
     liveFeed
 

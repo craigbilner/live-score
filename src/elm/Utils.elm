@@ -21,5 +21,5 @@ safeGetLiveTeams key =
 
 
 randomInt : Random.Seed -> ( Int, Random.Seed )
-randomInt seed =
-  Random.generate (Random.int 0 100) seed
+randomInt =
+  Random.generate (Random.int 0 100)
