@@ -39,7 +39,7 @@ run ( seed, fixture ) =
     newFixture =
       addEvent fixture
   in
-    if fixture.currentEvent == FM.Shot then
+    if fixture.currentEvent == FM.KickOff then
       ( seed, addGoal newFixture )
     else
       ( seed, newFixture )

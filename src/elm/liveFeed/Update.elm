@@ -38,7 +38,10 @@ update fixture =
       fixture
 
     x :: xs ->
-      { fixture | liveFeed = updateFeed x fixture.liveFeed }
+      { fixture
+        | liveFeed = updateFeed x fixture.liveFeed
+        , gameHistory = xs
+      }
 
 
 run : FixturesModel.Model -> FixturesModel.Model
