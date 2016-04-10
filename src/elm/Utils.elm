@@ -15,6 +15,11 @@ safeGetTeams key =
   Maybe.withDefault ( FM.emptyTeam, FM.emptyTeam ) << Dict.get key
 
 
+safeGetLiveTeams : Int -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam ) -> ( FM.LiveTeam, FM.LiveTeam )
+safeGetLiveTeams key =
+  Maybe.withDefault ( FM.emptyLiveTeam 0, FM.emptyLiveTeam 0 ) << Dict.get key
+
+
 randomInt : Random.Seed -> ( Int, Random.Seed )
 randomInt seed =
   Random.generate (Random.int 0 100) seed

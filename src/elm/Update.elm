@@ -25,6 +25,22 @@ updateIsPlaying model =
     { model | isPlaying = isPlaying }
 
 
+updateFixtures : Model.Model -> Model.Model
+updateFixtures model =
+  if model.isPlaying then
+    { model | fixtures = LiveUpdate.run model.fixtures }
+  else
+    model
+
+
+updateTable : Model.Model -> Model.Model
+updateTable model =
+  if model.isPlaying then
+    { model | table = TableUpdate.run model.table model.fixtures.fixtures }
+  else
+    model
+
+
 update : Action -> Model.Model -> ( Model.Model, Effects Action )
 update action model =
   case action of
@@ -45,9 +61,8 @@ update action model =
     UpdateTime time ->
       let
         newModel =
-          if model.isPlaying then
-            { model | fixtures = LiveUpdate.run model.fixtures }
-          else
-            model
+          updateFixtures model
+            |> updateIsPlaying
+            |> updateTable
       in
-        ( updateIsPlaying newModel, Effects.none )
+        ( newModel, Effects.none )

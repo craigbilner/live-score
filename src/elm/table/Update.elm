@@ -7,11 +7,11 @@ import Fixtures.Model as FM
 import PortModel
 
 
-updateTeam : Dict.Dict Int ( FM.Team, FM.Team ) -> PortModel.TeamData -> PortModel.TeamData
+updateTeam : Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam ) -> PortModel.TeamData -> PortModel.TeamData
 updateTeam teams team =
   let
     teamsStatus =
-      Utils.safeGetTeams team.id teams
+      Utils.safeGetLiveTeams team.id teams
 
     thisTeamStatus =
       fst teamsStatus
@@ -46,14 +46,14 @@ updateTeam teams team =
     }
 
 
-flattenFixtures : FM.Fixture -> Dict.Dict Int ( FM.Team, FM.Team ) -> Dict.Dict Int ( FM.Team, FM.Team )
+flattenFixtures : FM.Fixture -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam ) -> Dict.Dict Int ( FM.LiveTeam, FM.LiveTeam )
 flattenFixtures fixture dict =
   let
     homeTeam =
-      fst fixture.teams
+      fst fixture.liveFeed.teams
 
     awayTeam =
-      snd fixture.teams
+      snd fixture.liveFeed.teams
 
     withHome =
       Dict.insert homeTeam.id ( homeTeam, awayTeam ) dict
@@ -61,16 +61,15 @@ flattenFixtures fixture dict =
     Dict.insert awayTeam.id ( awayTeam, homeTeam ) withHome
 
 
-updateTable : TableModel.Model -> List FM.Fixture -> Bool -> TableModel.Model
-updateTable table fixtures isPlaying =
+run : TableModel.Model -> List FM.Fixture -> TableModel.Model
+run table fixtures =
   let
-    flatFixtures =
-      List.foldl flattenFixtures Dict.empty fixtures
-
     newData =
-      if isPlaying then
-        List.map (updateTeam flatFixtures) table.init
-      else
-        table.current
+      ((List.foldl flattenFixtures Dict.empty fixtures
+          |> updateTeam
+       )
+        |> List.map
+      )
+        table.init
   in
     { table | current = newData }
