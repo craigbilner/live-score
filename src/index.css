@@ -1,5 +1,6 @@
 body {
     background-color: green;
+    font-family: Tahoma;
 }
 
 .layout {
@@ -44,4 +45,29 @@ body {
 .table_cell--team {
     flex: 2;
     text-align: left;
+}
+
+.fixtures_card {
+    display: flex;
+    flex-flow: column;
+    margin: 1rem;
+    padding: 1rem;
+    max-width: 20rem;
+    min-height: 10rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.fixtures_card_row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fixtures_card_row_column {
+    display: flex;
+    flex-flow: column;
+}
+
+.fixtures_card_row_column_score {
+    text-align: center;
+    font-size: 4rem;
 }

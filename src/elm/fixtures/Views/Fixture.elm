@@ -1,10 +1,9 @@
 module Fixtures.Views.Fixture (..) where
 
 import Html exposing (div, ul, li, text)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (class)
 import Fixtures.Model as FixturesModel
 import Fixtures.Views.Scorers as Scorers
-import Fixtures.Views.FixtureStyles as Styles
 import Fixtures.Views.Side as Side
 
 
@@ -25,9 +24,9 @@ view fixture =
         snd fixture.teams
   in
     div
-      [ style Styles.card ]
+      [ class "fixtures_card" ]
       [ div
-          [ style Styles.row ]
+          [ class "fixtures_card_row" ]
           [ Side.view (fst fixture.teams) (fst fixture.liveFeed.teams)
           , div
               []
